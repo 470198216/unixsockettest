@@ -17,6 +17,7 @@ int cli_conn(const char *name)
 		if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
 				return(-1);
 		//使用自定义地址填充socket地址结构体
+#if 1 //必须存在，要不然 对应服务器会报a bad filename: No such file or directory ,类似于没有地址
 		memset(&un, 0, sizeof(un));
 		un.sun_family = AF_UNIX;
 		sprintf(un.sun_path, "%s%05d", CLI_PATH, getpid());
@@ -26,6 +27,7 @@ int cli_conn(const char *name)
 				rval = -2;
 				goto errout;
 		}
+#endif
 		//使用服务器进程地址填充socket地址结构体
 		memset(&un, 0, sizeof(un));
 		un.sun_family = AF_UNIX;
